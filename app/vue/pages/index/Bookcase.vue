@@ -1,25 +1,26 @@
 <template>
 <div class="indexbox">
   <div class="mtheader">
-    <mt-header title="全部文章">
+    <mt-header title="我的书架">
       <div slot="left">
          <mt-button @click="handleClose" icon="back"></mt-button>
       </div>
       <div slot="right">
-         <router-link to="/bookcase" class="link">书架</router-link>
+         <router-link to="/index" class="link">首页</router-link>
       </div>
     </mt-header>
   </div>
-  <div class="flexbox">
+    <div class="flexbox">
         <template v-for="book in books">
-             <div class="flexitem" @click="toDetail(book.img,book.name,book.author)">
+          <div class="flexitem" @click="toReading">
             <img v-bind:src="book.img"/>
             <div class="msg">{{book.name}}
                 <span>{{book.author}}</span>
             </div>
         </div>
         </template>
-       
+        <!-- <div class="flexitem" >+</div>  -->
+        <div class="flexitem">+</div>  
         
         
     </div>
@@ -102,11 +103,11 @@
             return {books}
         },
         methods:{
-          toDetail(img,name,author){
-            window.localStorage.setItem("bookImg",img);
-            window.localStorage.setItem("bookName",name);
-            window.localStorage.setItem("bookAuthor",author);
-            this.$router.push('/bookdetail');
+          toReading(){
+            // window.localStorage.setItem("bookImg",img);
+            // window.localStorage.setItem("bookName",name);
+            // window.localStorage.setItem("bookAuthor",author);
+            this.$router.push('/reading');
           },
           handleClose(){
             window.history.back();  
@@ -132,8 +133,6 @@
         justify-content:center;
         width:90%;
         margin:0 auto;
-        margin-top:40px;
-        padding-top:5px;
         background:#FFF;
        
         

@@ -3,12 +3,18 @@ import App from '../../App'
 
 
 const index = resolve => require.ensure([], () => resolve(require('../vue/pages/index/index')), 'index')
-const detail = resolve => require.ensure([], () => resolve(require('../vue/pages/detail/detail')), 'detail')
-const overView = resolve => require.ensure([], () => resolve(require('../vue/pages/detail/overView/overView')), 'overView')
-const Detailinstall = resolve => require.ensure([], () => resolve(require('../vue/pages/detail/install/install')), 'Detailinstall')
-const Detailconfig = resolve => require.ensure([], () => resolve(require('../vue/pages/detail/config/config')), 'Detailconfig')
-const Detailrun = resolve => require.ensure([], () => resolve(require('../vue/pages/detail/run/run')), 'Detailrun')
-const Detailmenu = resolve => require.ensure([], () => resolve(require('../vue/pages/detail/menu/menu')), 'Detailmenu')
+const Login = resolve => require.ensure([], () => resolve(require('../vue/pages/index/Login')), 'Login')
+const Register = resolve => require.ensure([], () => resolve(require('../vue/pages/index/Register')), 'Register')
+const Bookdetail = resolve => require.ensure([], () => resolve(require('../vue/pages/index/Bookdetail')), 'Bookdetail')
+const Booklist = resolve => require.ensure([], () => resolve(require('../vue/pages/index/Booklist')), 'Booklist')
+const Bookcase = resolve => require.ensure([], () => resolve(require('../vue/pages/index/Bookcase')), 'Bookcase')
+const Reading = resolve => require.ensure([], () => resolve(require('../vue/pages/index/Reading')), 'Reading')
+// const detail = resolve => require.ensure([], () => resolve(require('../vue/pages/detail/detail')), 'detail')
+// const overView = resolve => require.ensure([], () => resolve(require('../vue/pages/detail/overView/overView')), 'overView')
+// const Detailinstall = resolve => require.ensure([], () => resolve(require('../vue/pages/detail/install/install')), 'Detailinstall')
+// const Detailconfig = resolve => require.ensure([], () => resolve(require('../vue/pages/detail/config/config')), 'Detailconfig')
+// const Detailrun = resolve => require.ensure([], () => resolve(require('../vue/pages/detail/run/run')), 'Detailrun')
+// const Detailmenu = resolve => require.ensure([], () => resolve(require('../vue/pages/detail/menu/menu')), 'Detailmenu')
 
 
 export default [{
@@ -17,7 +23,7 @@ export default [{
     children: [ //二级路由。对应App.vue
         {
             path: '',
-            redirect: '/index'
+            redirect: '/login'
         },
         {
             path: '/index',
@@ -25,47 +31,30 @@ export default [{
         },
         //搜索页 
         {
-            path: '/detail',
-            component: detail,
-            children: [{
-                path: '',
-                redirect: 'overView'
-            }, {
-                path: 'overView',
-                component: overView
-            }, {
-                path: 'install',
-                component: Detailinstall
-            }, {
-                path: 'run',
-                component: Detailrun
-            }, {
-                path: 'menu',
-                component: Detailmenu
-            }, {
-                path: 'config',
-                component: Detailconfig
-            }]
+            path: '/login',
+            name: 'login',
+            component: Login    
+        },
+        {
+            path: '/register',
+            component: Register    
+        },
+        {
+            path: '/bookdetail',
+            component: Bookdetail    
+        },  
+        {
+            path: '/booklist',
+            component: Booklist    
+        },
+        {
+            path: '/bookcase',
+            component: Bookcase    
+        },
+        {
+            path: '/reading',
+            component: Reading    
         }
-        //商铺详情页 
-        // {
-        //     path: '/shop',
-        //     component: shop,
-        //     children: [{
-        //         path: 'foodDetail', //食品详情页
-        //         component: foodDetail,
-        //     }, {
-        //         path: 'shopDetail', //商铺详情页
-        //         component: shopDetail,
-        //         children: [{
-        //             path: 'shopSafe', //商铺安全认证页
-        //             component: shopSafe,
-        //         }, ]
-        //     }]
-        // }
-
-
-
 
     ]
 }]

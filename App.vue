@@ -1,11 +1,11 @@
 <template>
 <div>
-	<div class="mtheader">
+	<!-- <div class="mtheader">
 		<mt-header title="全部文章"></mt-header>
-	</div>
+	</div> -->
 
 	<transition>
-		<router-view style="margin-top:40px;"></router-view>
+		<router-view ></router-view>
 	</transition>
 </div>
 
@@ -27,7 +27,6 @@ width:100%;
 left:0px;
 top:0px;
 box-shadow:0px 0px 5px 2px #CDCDCD;
-
 }
 	*{
 		margin:0;
