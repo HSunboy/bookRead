@@ -100,6 +100,7 @@
     width:100%;
     padding-top:10px;
     padding-bottom:10px;
+    min-height:100%;
 }
     .flexbox {
         display:flex;
@@ -108,7 +109,7 @@
         width:90%;
         margin:0 auto;
         background:#FFF;
-       
+       min-height:100%;
         
         box-shadow:0px 0px 10px 5px #DCDCDC;
         .flexitem {
