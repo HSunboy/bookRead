@@ -121,6 +121,7 @@
     width:100%;
     padding-top:10px;
     padding-bottom:10px;
+    min-height:100%;
 }
 .link {
   color: #fff;
@@ -135,7 +136,7 @@
         margin-top:40px;
         padding-top:5px;
         background:#FFF;
-       
+       min-height:100%;
         
         box-shadow:0px 0px 10px 5px #DCDCDC;
         .flexitem {
