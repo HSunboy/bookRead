@@ -1,56 +1,98 @@
 <template>
-<div class="login">
+  <div class="login">
     <mt-header title="注册">
       <div slot="left">
-         <mt-button @click="handleClose" icon="back"></mt-button>
+        <mt-button @click="handleClose" icon="back"></mt-button>
       </div>
       <div slot="right">
-         <router-link to="/login" class="link">登录</router-link>
+        <router-link to="/login" class="link">登录</router-link>
       </div>
     </mt-header>
-
-  <div class="loginbox">
-    <div class="wrap">
-      <div class="lab">请输入账户</div>
-      <input type="text" name="">
-    </div>  
-    <div class="wrap">
-      <div class="lab">请输入手机号码</div>
-      <input type="text" name="">
+  
+    <div class="loginbox">
+      <div class="wrap">
+        <div class="lab">请输入账户</div>
+        <input type="text" name="" v-model="username">
+      </div>
+      <div class="wrap">
+        <div class="lab">请输入密码</div>
+        <input type="password" name="" v-model="pwd">
+      </div>
+      <div class="wrap">
+        <div class="lab">请再次输入密码</div>
+        <input type="password" name="" v-model="conPwd">
+      </div>
+      <div class="wrap">
+        <mt-button type="primary" size="large" @click="rgSuccess">注册</mt-button>
+      </div>
     </div>
-    <div class="wrap">
-      <div class="lab">请输入密码</div>
-      <input type="password" name="">
-    </div>
-    <div class="wrap">  
-      <mt-button type="primary" size="large" @click="rgSuccess">注册</mt-button>
-    </div>              
   </div>
-</div>
-    
-
-
-
 </template>
-<script>
-   // import dyj from '../../../static/images/dyj.jpeg'
-   // import xylz from '../../../static/images/xylz.jpeg'
-   // import dzz from '../../../static/images/dzz.jpeg'
 
-    export default {
-        data() {
-            return {}
-        },
-        methods:{
-          rgSuccess () {
-            alert("注册成功");
-            this.$router.push('/login')           
-          },
-          handleClose () {
-            window.history.back();  
-          }
+<script>
+
+  import url from '../../../url.js'
+  import {
+    Toast
+  } from 'mint-ui';
+  export default {
+    data() {
+      return {
+        username: '',
+        pwd: '',
+        conPwd: ''
+      }
+    },
+    methods: {
+      rgSuccess() {
+        if (this.$data.username && this.$data.pwd && (this.$data.pwd == this.$data.conPwd)) {
+          this.$http.get(url.register, {
+            params: {
+              username: this.$data.username,
+              password: this.$data.pwd,
+              sex: 1
+            }
+          }).then(response => {
+            console.log(response)
+            if (response.body.isSuccess) {
+              Toast({
+                message: '注册成功',
+                duration: 1000
+              });
+              var that = this
+              setTimeout(function() {
+                that.$router.push('/login')
+  
+              }, 1100)
+            } else {
+              Toast({
+                message: '注册失败',
+                duration: 1000
+              });
+            }
+  
+          }, response => {
+            Toast({
+              message: '注册失败',
+              duration: 1000
+            });
+          })
+  
+        } else {
+          Toast({
+            message: '请填写正确的信息',
+            duration: 1000
+          });
         }
+  
+  
+  
+      },
+      handleClose() {
+        window.history.back();
+      }
     }
+  }
 </script>
 
 <style lang="sass" scoped>

@@ -1,117 +1,101 @@
 <template>
-<div class="indexbox">
-  <div class="mtheader">
-    <mt-header title="我的书架">
-      <div slot="left">
-         <mt-button @click="handleClose" icon="back"></mt-button>
-      </div>
-      <div slot="right">
-         <router-link to="/index" class="link">首页</router-link>
-      </div>
-    </mt-header>
-  </div>
-    <div class="flexbox">
-        <template v-for="book in books">
-          <div class="flexitem" @click="toReading">
-            <img v-bind:src="book.img"/>
-            <div class="msg">{{book.name}}
-                <span>{{book.author}}</span>
-            </div>
+    <div class="indexbox">
+        <div class="mtheader">
+            <mt-header title="我的书架">
+                <div slot="left">
+                    <mt-button @click="handleClose" icon="back"></mt-button>
+                </div>
+                <div slot="right">
+                    <router-link to="/index" class="link">首页</router-link>
+                </div>
+            </mt-header>
         </div>
-        </template>
+        <div class="flexbox">
+            <template v-for="book in books">
+                          <div class="flexitem" @click="toReading(baseUrl+'/images/'+book.bookname+'.jpg',book.bookname,book.writername,book.bookmsg,book.bookcount)">
+                            <img v-bind:src="baseUrl+'/images/'+book.bookname+'.jpg'"/>
+                            <div class="msg">{{book.bookname}}
+                                <span>{{book.writername}}</span>
+                            </div>
+                        </div>
+</template>
         <!-- <div class="flexitem" >+</div>  -->
-        <div class="flexitem">+</div>  
+       
         
         
-    </div>
+        </div>
 </div>
     
 
 
 
 </template>
-<script>
-   import dyj from '../../../static/images/dyj.jpeg'
-   import xylz from '../../../static/images/xylz.jpeg'
-   import dzz from '../../../static/images/dzz.jpeg'
-   var books=[{
-       img:dyj,
-       name:'我是大赢家',
-       author:'梦一如年'
-   },{
-       img:xylz,
-       name:'雪鹰领主',
-       author:'我爱西红柿'
-   },{
-       img:dzz,
-       name:'大主宰',
-       author:'天蚕土豆'
-   },{
-       img:dyj,
-       name:'我是大赢家',
-       author:'梦一如年'
-   },{
-       img:xylz,
-       name:'雪鹰领主',
-       author:'我爱西红柿'
-   },{
-       img:dzz,
-       name:'大主宰',
-       author:'天蚕土豆'
-   },{
-       img:dyj,
-       name:'我是大赢家',
-       author:'梦一如年'
-   },{
-       img:xylz,
-       name:'雪鹰领主',
-       author:'我爱西红柿'
-   },{
-       img:dzz,
-       name:'大主宰',
-       author:'天蚕土豆'
-   },
-   {
-       img:dyj,
-       name:'我是大赢家',
-       author:'梦一如年'
-   },{
-       img:xylz,
-       name:'雪鹰领主',
-       author:'我爱西红柿'
-   },{
-       img:dzz,
-       name:'大主宰',
-       author:'天蚕土豆'
-   },
-   {
-       img:dyj,
-       name:'我是大赢家',
-       author:'梦一如年'
-   },{
-       img:xylz,
-       name:'雪鹰领主',
-       author:'我爱西红柿'
-   },{
-       img:dzz,
-       name:'大主宰',
-       author:'天蚕土豆'
-   }]
 
+<script>
+  
+    import url from '../../../url.js';
+    import {
+        Indicator
+    } from 'mint-ui';
+    import {
+        Toast
+    } from 'mint-ui';
     export default {
         data() {
-            return {books}
+            return {
+                baseUrl: url.statusUrl,
+                books: []
+            }
         },
-        methods:{
-          toReading(){
-            // window.localStorage.setItem("bookImg",img);
-            // window.localStorage.setItem("bookName",name);
-            // window.localStorage.setItem("bookAuthor",author);
-            this.$router.push('/reading');
-          },
-          handleClose(){
-            window.history.back();  
-          }
+        methods: {
+            toReading(img, name, author, msg, count) {
+                // window.localStorage.setItem("bookImg",img);
+                // window.localStorage.setItem("bookName",name);
+                // window.localStorage.setItem("bookAuthor",author);
+                this.$router.push({
+                    path: '/bookdetail',
+                    query: {
+                        bookImg: img,
+                        bookName: name,
+                        bookAuthor: author,
+                        bookMsg: msg,
+                        bookcount: count
+                    }
+    
+                });
+            },
+            handleClose() {
+                window.history.back();
+            }
+        },
+        mounted() {
+            Indicator.open({
+                text: '加载中...',
+                spinnerType: 'fading-circle'
+            });
+            this.$http.get(url.getMybook, {
+                params: {
+                    sessionId: window.localStorage['sessionId'],
+                    username: window.localStorage['username']
+                }
+            }).then(res => {
+                Indicator.close();
+                if (res.body.isSuccess) {
+                    this.$data.books = res.body.books
+                } else {
+                    Toast({
+                        message: '获取书籍失败',
+                        duration: 1000
+                    });
+                }
+            }, res => {
+                Indicator.close();
+                Toast({
+                    message: '获取书籍失败',
+                    duration: 1000
+                });
+            })
+    
         }
     }
 </script>
@@ -134,6 +118,8 @@
         width:90%;
         margin:0 auto;
         background:#FFF;
+        margin-top:40px;
+        min-height:100%;
        
         
         box-shadow:0px 0px 10px 5px #DCDCDC;

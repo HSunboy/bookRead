@@ -1,7 +1,7 @@
 <template>
 <div class="list">
   <ul>
-    <li v-for="n in 100" @click="toRead">弟 {{n}} 章</li>
+    <li v-for="n in bookcount" @click="toRead(n)">第 {{n}} 章</li>
   </ul>
 </div>
     
@@ -10,13 +10,12 @@
 
 </template>
 <script>
-   import dyj from '../../../static/images/dyj.jpeg'
-   import xylz from '../../../static/images/xylz.jpeg'
-   import dzz from '../../../static/images/dzz.jpeg'
 
     export default {
         data() {
-            return {}
+            return {
+              bookcount:parseInt(this.$route.query.bookcount)
+            }
         },
         methods:{
           loadTop(){
@@ -28,10 +27,18 @@
           allLoaded(){
 
           },
-          toRead(){
-            this.$router.push('/reading');
+          toRead(n){
+            this.$router.push({
+              path:'/reading',
+              query:{
+                bookName:this.$route.query.bookName,
+                page:n
+              }
+            
+            });
           }
         }
+        
     }
 </script>
 
@@ -39,6 +46,7 @@
 .list {
     background:#F5F5F5;
     width:100%;
+    min-height:100%;
     ul{
       width: 90%;
       margin-left: 5%;

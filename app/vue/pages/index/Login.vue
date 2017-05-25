@@ -1,54 +1,95 @@
 <template>
-<div class="login">
+  <div class="login">
     <mt-header title="登 录">
       <div slot="left">
-         <mt-button @click="handleClose">关闭</mt-button>
+        <mt-button @click="handleClose">关闭</mt-button>
       </div>
       <div slot="right">
-         <router-link to="/register" class="link">注册</router-link>
+        <router-link to="/register" class="link">注册</router-link>
       </div>
     </mt-header>
-
-  <div class="loginbox">
-    <div class="wrap">
-      <div class="lab">请输入账户</div>
-      <input type="text" name="">
-    </div>  
-    <div class="wrap">
-      <div class="lab">请输入手机号码</div>
-      <input type="text" name="">
+  
+    <div class="loginbox">
+      <div class="wrap">
+        <div class="lab">请输入用户名</div>
+        <input type="text" name="" v-model="username">
+      </div>
+      <div class="wrap">
+        <div class="lab">请输入密码</div>
+        <input type="password" name="" v-model="pwd">
+      </div>
+      <div class="wrap">
+        <mt-button type="primary" size="large" @click="bookSubmit">登录</mt-button>
+      </div>
     </div>
-    <div class="wrap">  
-      <mt-button type="primary" size="large" @click="bookSubmit">登录</mt-button>
-    </div>
-    <div class="wrap">  
-      <mt-button type="primary" size="large">忘记密码？</mt-button>
-    </div>                
   </div>
-</div>
-    
-
-
-
 </template>
-<script>
-   // import dyj from '../../../static/images/dyj.jpeg'
-   // import xylz from '../../../static/images/xylz.jpeg'
-   // import dzz from '../../../static/images/dzz.jpeg'
 
-    export default {
-        data() {
-            return {}
-        },
-        methods:{
-          handleClose () {
-            window.history.back();  
-          },
-          bookSubmit () {
-            this.$router.push('/index');
-          }
+<script>
+  // import dyj from '../../../static/images/dyj.jpeg'
+  // import xylz from '../../../static/images/xylz.jpeg'
+  // import dzz from '../../../static/images/dzz.jpeg'
+  import url from '../../../url.js';
+  import {
+    Indicator
+  } from 'mint-ui';
+  import {
+    Toast
+  } from 'mint-ui';
+  export default {
+    data() {
+      return {
+        username: '',
+        pwd: ''
+      }
+    },
+    methods: {
+      handleClose() {
+        window.history.back();
+      },
+      bookSubmit() {
+  
+        if (this.$data.username && this.$data.pwd) {
+          Indicator.open({
+            text: '加载中...',
+            spinnerType: 'fading-circle'
+          });
+          this.$http.get(url.login, {
+            params: {
+              username: this.$data.username,
+              password: this.$data.pwd
+            }
+          }).then(res => {
+            Indicator.close();
+            console.log(res)
+            if (res.body.isSuccess) {
+              window.localStorage['sessionId'] = res.body.sessionId
+              window.localStorage['username'] = this.$data.username
+              this.$router.push('/index');
+            } else {
+              Toast({
+                message: res.body.errorMsg,
+                duration: 1000
+              });
+            }
+          }, res => {
+            Indicator.close();
+            Toast({
+              message: '服务器繁忙',
+              duration: 1000
+            });
+          });
+  
+        } else {
+          Toast({
+            message: '请填写正确的信息',
+            duration: 1000
+          });
         }
+  
+      }
     }
+  }
 </script>
 
 <style lang="sass" scoped>
